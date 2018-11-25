@@ -3,16 +3,16 @@ weight=20
 move = 50
 
 def enCode(code):
-    key = int(random.random()*15)
-    engbk=bytearray(code.encode('utf-8'))
-    result = bytearray(len(engbk)*3)
-    for i in range(len(engbk)):
+    key = int(random.random()*15) #create a random key
+    engbk=bytearray(code.encode('utf-8')) #encode into utf-8
+    result = bytearray(len(engbk)*3) #result is a list with 3 elements, two of value and one is key
+    for i in range(len(engbk)): #encode every symbol
         origi = engbk[i]
         firsrencode = origi^key
-        third = firsrencode%weight
-        fourth = firsrencode//weight
-        result[i*3]=third+move
-        result[i*3+1]=fourth+move
+        rest = firsrencode%weight
+        scale = firsrencode//weight
+        result[i*3]=rest+move
+        result[i*3+1]=scale+move
         result[i*3+2]=key
     return result.decode('utf-8')
 

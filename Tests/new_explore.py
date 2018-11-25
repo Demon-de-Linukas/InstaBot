@@ -9,8 +9,8 @@ import selenium
 
 
 
-path = ''
-keyword = ''
+path = 'D:\Workspace_Pycharm/loginData.csv'
+keyword = 'linukas'
 username,passw = ut.getUserData(path,keyword)
 dictionary = ut.dictionary
 tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',

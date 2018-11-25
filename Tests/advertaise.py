@@ -9,8 +9,8 @@ import random
 import string
 import selenium
 
-path = ''
-keyword = ''
+path = 'D:\Workspace_Pycharm/loginData.csv'
+keyword = 'jjk'
 dictionary=ut.dictionary
 username,passw = ut.getUserData(path,keyword)
 
@@ -18,7 +18,7 @@ process = True
 while True:
     print('Starting...')
     print('Waiting for login')
-    browser = ut.login(username=username, password=passw,headless=True)
+    browser = ut.login(username=username, password=passw,headless=False)
     print('Succed!')
     start = time.time()
     while process:
