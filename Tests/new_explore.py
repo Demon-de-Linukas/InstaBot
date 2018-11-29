@@ -16,7 +16,6 @@ dictionary = ut.dictionary
 tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
           'buildings','photography','photograph','photoshop']
 process = True
-like_time=0
 while True:
     print('Starting...')
     print('Waiting for login')
@@ -25,11 +24,13 @@ while True:
     start = time.time()
     while process:
         #browser.get('https://www.instagram.com/explore/')
-        adress = 'https://www.instagram.com/explore/'#tags/' + random.choice(tagdic)
+        adress = 'https://www.instagram.com/explore/'+random.choice(['','tags/' + random.choice(tagdic)])
         print(adress)
         browser.get(adress)
         print('Explore page...')
         time.sleep(5)
+        like_time = 0
+        n = 0
         warning = 0
         i = 0
         for n in range(20):

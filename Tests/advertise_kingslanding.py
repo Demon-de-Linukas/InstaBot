@@ -8,10 +8,11 @@ import random
 import string
 import selenium
 
-
+tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
+          'buildings','photography','photograph','photoshop']
 dictionary=ut.dictionary
-path = ''
-keyword = ''
+path = 'D:\Workspace_Pycharm/loginData.csv'
+keyword = 'king'
 username,passw = ut.getUserData(path,keyword)
 process = True
 while True:
@@ -20,11 +21,13 @@ while True:
     browser = ut.login(username=username, password=passw, headless=False)
     print('Succed!')
     start = time.time()
-    adres= 'https://www.instagram.com/explore/'
     while process:
+        adres = 'https://www.instagram.com/explore/tags/' + random.choice(tagdic)
         browser.get(adres)
         time.sleep(5)
         warning = 0
+        liked = 0
+        n=0
         for n in range(100):
             for i in range(99):
                 try:
@@ -47,24 +50,31 @@ while True:
                        warning = warning + 1
                    else:
                        warning = warning + 2
-                   ut.likepost(browser)
+                   if ut.likepost(browser):
+                       liked +=1
                    if browser.current_url != adres:
                        browser.back()
                    if warning > 26:
                        warning = 0
                 except selenium.common.exceptions.StaleElementReferenceException as e:
                    print(e)
+                if liked >= 50:
+                    n=1000
+                    break
+                    print('Refreshing....')
+        else:
             ut.execute_times(browser, 1)
             end = time.time()
             if (end - start) / 60 / 60 > 1.5:
                 browser.close()
-                break
                 process = False
                 print('Close browser now.')
-    print('Sleeping......')
-    time.sleep(7200)
-    print('Get up!!!!! Go on!')
-    process = True
+                break
+    else:
+        print('Sleeping......')
+        time.sleep(7200)
+        print('Get up!!!!! Go on!')
+        process = True
 
 
 
