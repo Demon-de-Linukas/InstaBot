@@ -1,7 +1,7 @@
 
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common import exceptions as exceptionsln
-from SeleniumTest.src import utility as ut
+from src import utility as ut
 
 
 import time
@@ -14,8 +14,9 @@ describe = ['fucking', 'f**cking stuipid', 'suipidl','lying','cheap','no good','
             'inbred','over-stuffed','ignorant','blood-sucking','ass kissing','brainless','dickless','heartless','bug-eyed','worm-deaded sack of monkey']
 object = ['shit','son of bitch','slut','shit-glutton','buzzard','greedy moth','bastard','sucker','fucker','pig','greasy creature']
 
-path = ''
-keyword = ''
+path = 'D:\Workspace/loginData.csv'
+keyword = 'jjk'
+
 username,passw = ut.getUserData(path,keyword)
 process = True
 while True:

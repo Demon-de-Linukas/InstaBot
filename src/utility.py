@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys #引入keys类操作
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common import exceptions as exceptionsln
 from selenium.common.exceptions import StaleElementReferenceException
-from SeleniumTest.src import cypter as cp
+from src import cypter as cp
 
 import time
 import selenium
@@ -97,10 +97,10 @@ def close_post(driver):
 
 def likepost(driver):
     try:
-        zan = driver.find_element_by_css_selector("[class ^= 'glyphsSpriteHeart']")
-        if 'outline' in (zan.get_attribute('class')):
-            ActionChains(driver).double_click(zan).perform()
-            time.sleep(1)
+        zan = driver.find_element_by_css_selector("[class ^= 'dCJp8 afkep ']")
+        ActionChains(driver).double_click(zan).perform()
+        time.sleep(1)
+        if 'filled' in (zan.get_attribute('class')):
             print('Post liked')
             return False
         else:
@@ -108,6 +108,7 @@ def likepost(driver):
             return True
     except (selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.StaleElementReferenceException) as ee:
         print(ee)
+        return True
 
 
 def fffk_notify(browser):

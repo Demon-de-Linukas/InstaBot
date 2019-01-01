@@ -1,17 +1,16 @@
 from selenium.webdriver.common.action_chains import ActionChains 
 from selenium.common import exceptions as exceptionsln
-from SeleniumTest.src import utility as ut
+from src import utility as ut
 
 
 import time
 import random
-import string
 import selenium
 
 tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
           'buildings','photography','photograph','photoshop']
 dictionary=ut.dictionary
-path = 'D:\Workspace_Pycharm/loginData.csv'
+path = 'D:\Workspace/loginData.csv'
 keyword = 'king'
 username,passw = ut.getUserData(path,keyword)
 process = True
@@ -56,12 +55,16 @@ while True:
                        browser.back()
                    if warning > 26:
                        warning = 0
-                except selenium.common.exceptions.StaleElementReferenceException as e:
+                except (exceptionsln.TimeoutException, selenium.common.exceptions.StaleElementReferenceException,
+                    selenium.common.exceptions.InvalidElementStateException,
+                    selenium.common.exceptions.NoSuchElementException) as e:
                    print(e)
                 if liked >= 50:
                     n=1000
                     break
                     print('Refreshing....')
+                ut.execute_times(browser, 1)
+
         else:
             ut.execute_times(browser, 1)
             end = time.time()

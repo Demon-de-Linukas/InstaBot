@@ -1,18 +1,17 @@
 
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common import exceptions as exceptionsln
-from SeleniumTest.src import utility as ut
+from src import utility as ut
 
 
 import time
 import random
-import string
 import selenium
 
-path = 'D:\Workspace_Pycharm/loginData.csv'
+path = 'D:\Workspace/loginData.csv'
 keyword = 'jjk'
 dictionary=ut.dictionary
-username,passw = ut.getUserData(path,keyword)
+username, passw = ut.getUserData(path,keyword)
 
 process = True
 while True:
@@ -54,7 +53,9 @@ while True:
                        #ActionChains(browser).double_click(closse).perform()
                        if warning > 26:
                            warning = 0
-               except selenium.common.exceptions.StaleElementReferenceException as e:
+               except (exceptionsln.TimeoutException, selenium.common.exceptions.StaleElementReferenceException,
+                    selenium.common.exceptions.InvalidElementStateException,
+                    selenium.common.exceptions.NoSuchElementException) as e:
                    print(e)
             ut.execute_times(browser, 5)
             end = time.time()

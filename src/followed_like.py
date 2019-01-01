@@ -1,16 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains #引入ActionChains鼠标操作类
-from selenium.webdriver.common.keys import Keys #引入keys类操作
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common import exceptions as exceptionsln
 from selenium.common.exceptions import StaleElementReferenceException
-from SeleniumTest.src import utility as ut
+from src import utility as ut
 
 
 import time
 import random
 import selenium
-import numpy
 
 
 
@@ -55,7 +53,9 @@ for n in range(1,150):
                     warning = warning + 1
                 else:
                     warning = warning + 2
-            except (exceptionsln.TimeoutException, selenium.common.exceptions.StaleElementReferenceException) as ee :
+            except (exceptionsln.TimeoutException, selenium.common.exceptions.StaleElementReferenceException,
+                    selenium.common.exceptions.InvalidElementStateException,
+                    selenium.common.exceptions.NoSuchElementException) as ee:
                 print (ee)
             if warning > 26:
                 warning = 0
