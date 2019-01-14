@@ -16,13 +16,13 @@ import selenium
 dictionary = ut.dictionary
 
 dictionary=ut.dictionary
-path = 'loginData.csv'
+path = 'D:\Workspace_Pycharm/loginData.csv'
 keyword = 'linukas'
 username,passw = ut.getUserData(path,keyword)
 print('Wait for login...')
-browser = ut.login(username, passw,False)
+browser = ut.login(username, passw,True)
 print('Succed!!')
-ut.fffk_notify(browser)
+#ut.fffk_notify(browser)
 warning = 0
 time.sleep(5)
 for n in range(1,150):

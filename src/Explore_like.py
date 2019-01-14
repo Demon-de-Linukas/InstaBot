@@ -13,8 +13,7 @@ dictionary=ut.dictionary
 path = 'loginData.csv'
 keyword = 'linukas'
 username,passw = ut.getUserData(path,keyword)
-tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
-          'buildings','photography','photograph','photoshop']
+tagdic = ut.tagdic
 process = True
 like_time=0
 while True:

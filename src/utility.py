@@ -4,12 +4,15 @@ from selenium.webdriver.common.keys import Keys #引入keys类操作
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common import exceptions as exceptionsln
 from selenium.common.exceptions import StaleElementReferenceException
-from src import cypter as cp
+from SeleniumTest.src import cypter as cp
+from selenium.webdriver.chrome.options import Options
+
 
 import time
 import selenium
 import csv
 import random
+import logging
 
 
 dictionary = ['Wow!!', 'Nice post!', 'Great post!', 'Really nice!','Interesting!',
@@ -19,11 +22,29 @@ dictionary = ['Wow!!', 'Nice post!', 'Great post!', 'Really nice!','Interesting!
               'brilliant~', 'Impressive!', 'nice going!','good ', 'good picture!', 'good photo!', 'nice picture!', '~~~~', 'great shot!', 'Nice shot!'
               , 'good one!', 'Nice one!', 'Impressive shot!', 'Brilliant one!', 'best shot!']
 
-def addoptions():
-    addoptions = webdriver.ChromeOptions()
-    addoptions.add_argument('headless')
-    addoptions.add_argument('window-size=1200x600')
-    return addoptions
+tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
+          'buildings','photography','photograph','photoshop','arizona','sonyalpha',
+          'canon','vacation','greece','bestplacestogo','reflection','blogger']
+
+def initlog(userName):
+    # create logger with 'spam_application'
+    logger = logging.getLogger('spam_application_'+userName)
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler('logs/instalog_%s.log'%userName)
+    fh.setLevel(logging.DEBUG)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.ERROR)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    # add the handlers to the logger
+    logger.addHandler(fh)
+    logger.addHandler(ch)
+    return logger
+
 
 def getpostersname(arti):
     title = arti.find_element_by_css_selector("[class ^= 'FPmhX notranslate nJAzx']")
@@ -40,11 +61,14 @@ def execute_times(driver, times):
 
 
 def login(username, password,headless):
-    options = addoptions()
+    options = Options()
+    options.add_argument('window-size=1200x600')
+    options.add_argument('--lang=zh-CN')
+    options.add_argument('--dns-prefetch-disable')
     if headless:
-        browser = webdriver.Chrome(chrome_options=options)
-    else:
-        browser = webdriver.Chrome()
+        options.add_argument('headless')
+
+    browser = webdriver.Chrome()
     browser.get("https://www.instagram.com/accounts/login/")
     usernameBox = browser.find_element_by_name('username')
     passwordBox = browser.find_element_by_name('password')
@@ -95,20 +119,62 @@ def close_post(driver):
     ActionChains(driver).double_click(cll).perform()
 
 
-def likepost(driver):
+# def likepost(driver,logger):
+#     try:
+#         zan = driver.find_element_by_css_selector("[class ^= 'dCJp8 afkep ']")
+#         ActionChains(driver).double_click(zan).perform()
+#         time.sleep(1)
+#         if 'filled' in (zan.get_attribute('class')):
+#             print('Post liked')
+#             return False
+#         else:
+#             print('Already Liked')
+#             return True
+#     except (selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.StaleElementReferenceException) as ee:
+#         print(ee)
+#         return True
+
+
+
+def likepost(browser, logger):
+    """Likes the browser opened image"""
+    # check action availability
+    like_xpath = "//article/div/section/span/button/span[@aria-label='赞']"
+    unlike_xpath = "//section/span/button/span[@aria-label='取消赞']"
     try:
-        zan = driver.find_element_by_css_selector("[class ^= 'dCJp8 afkep ']")
-        ActionChains(driver).double_click(zan).perform()
-        time.sleep(1)
-        if 'filled' in (zan.get_attribute('class')):
-            print('Post liked')
-            return False
+       # find first for like element
+        like_elem = browser.find_elements_by_xpath(like_xpath)
+        if len(like_elem) == 1:
+                # sleep real quick right before clicking the element
+                time.sleep(2)
+                ActionChains(browser).double_click(like_elem[0]).perform()
+                # check now we have unlike instead of like
+                liked_elem = browser.find_elements_by_xpath(unlike_xpath)
+
+                if len(liked_elem) == 1:
+                    logger.info('--> Image Liked!')
+                    # get the post-like delay time to sleep
+                    time.sleep(2)
+                    return True
+
+                else:
+                    # if like not seceded wait for 2 min
+                    logger.info('--> Image was not able to get Liked! maybe blocked ?')
+                    time.sleep(2)
+
         else:
-            print('Already Liked')
-            return True
-    except (selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.StaleElementReferenceException) as ee:
-        print(ee)
-        return True
+            liked_elem = browser.find_elements_by_xpath(unlike_xpath)
+            if len(liked_elem) == 1:
+                logger.info('--> Image already liked!')
+                return False
+
+        logger.info('--> Invalid Like Element!')
+
+        return False
+    except (selenium.common.exceptions.NoSuchElementException,
+             selenium.common.exceptions.StaleElementReferenceException) as ee:
+        logger.error(ee)
+        return False
 
 
 def fffk_notify(browser):

@@ -1,19 +1,19 @@
 from selenium.webdriver.common.action_chains import ActionChains 
 from selenium.common import exceptions as exceptionsln
-from src import utility as ut
+from SeleniumTest.src import utility as ut
 
 
 import time
 import random
 import selenium
 
-tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
-          'buildings','photography','photograph','photoshop']
+tagdic = ut.tagdic
 dictionary=ut.dictionary
-path = 'D:\Workspace/loginData.csv'
+path = 'D:\Workspace_Pycharm/loginData.csv'
 keyword = 'king'
 username,passw = ut.getUserData(path,keyword)
 process = True
+logger = ut.initlog(username)
 while True:
     print('Starting...')
     print('Waiting for login')
@@ -49,7 +49,7 @@ while True:
                        warning = warning + 1
                    else:
                        warning = warning + 2
-                   if ut.likepost(browser):
+                   if ut.likepost(browser,logger):
                        liked +=1
                    if browser.current_url != adres:
                        browser.back()
@@ -63,7 +63,7 @@ while True:
                     n=1000
                     break
                     print('Refreshing....')
-                ut.execute_times(browser, 1)
+                #ut.execute_times(browser, 1)
 
         else:
             ut.execute_times(browser, 1)

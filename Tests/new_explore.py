@@ -8,8 +8,7 @@ import random
 import string
 import selenium
 
-tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
-          'buildings','photography','photograph','photoshop']
+tagdic = ut.tagdic
 dictionary = ut.dictionary
 path = 'D:\Workspace/loginData.csv'
 keyword = 'linukas'
