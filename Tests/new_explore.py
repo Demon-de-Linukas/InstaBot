@@ -13,6 +13,8 @@ dictionary = ut.dictionary
 path = 'D:\Workspace/loginData.csv'
 keyword = 'linukas'
 username,passw = ut.getUserData(path,keyword)
+logger = ut.initlog(username)
+
 process = True
 while True:
     print('Starting...')
@@ -43,7 +45,7 @@ while True:
                        warning = warning + 1
                    else:
                        warning = warning + 2
-                   if ut.likepost(browser):
+                   if ut.likepost(browser,logger):
                        liked +=1
                    if browser.current_url != adres:
                        browser.back()

@@ -12,7 +12,7 @@ path = 'D:\Workspace/loginData.csv'
 keyword = 'jjk'
 dictionary=ut.dictionary
 username, passw = ut.getUserData(path,keyword)
-
+logger = ut.initlog(username)
 process = True
 while True:
     print('Starting...')
@@ -46,11 +46,9 @@ while True:
                            warning = warning + 1
                        else:
                            warning = warning + 2
-                       ut.likepost(browser)
+                       ut.likepost(browser,logger)
                        if browser.current_url != 'https://www.instagram.com/explore/':
                            browser.back()
-                       #closse = browser.find_element_by_xpath('/html/body/div[3]/div/button')
-                       #ActionChains(browser).double_click(closse).perform()
                        if warning > 26:
                            warning = 0
                except (exceptionsln.TimeoutException, selenium.common.exceptions.StaleElementReferenceException,

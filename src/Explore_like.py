@@ -13,6 +13,7 @@ dictionary=ut.dictionary
 path = 'loginData.csv'
 keyword = 'linukas'
 username,passw = ut.getUserData(path,keyword)
+logger = ut.initlog(username)
 tagdic = ut.tagdic
 process = True
 like_time=0
@@ -51,7 +52,7 @@ while True:
                     else:
                         warning = warning + 2
                     if 10*random.random() < 7:
-                        status = ut.likepost(browser)
+                        status = ut.likepost(browser,logger)
                         like_time +=1
                     if browser.current_url !=adress:
                         browser.back()

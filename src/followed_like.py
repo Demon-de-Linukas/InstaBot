@@ -19,6 +19,8 @@ dictionary=ut.dictionary
 path = 'D:\Workspace_Pycharm/loginData.csv'
 keyword = 'linukas'
 username,passw = ut.getUserData(path,keyword)
+logger = ut.initlog(username)
+
 print('Wait for login...')
 browser = ut.login(username, passw,True)
 print('Succed!!')
