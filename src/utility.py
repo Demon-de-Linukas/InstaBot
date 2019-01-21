@@ -1,18 +1,16 @@
-from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains #引入ActionChains鼠标操作类
-from selenium.webdriver.common.keys import Keys #引入keys类操作
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common import exceptions as exceptionsln
-from selenium.common.exceptions import StaleElementReferenceException
-from SeleniumTest.src import cypter as cp
-from selenium.webdriver.chrome.options import Options
-
-
 import time
 import selenium
 import csv
-import random
 import logging
+
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.common import exceptions as exceptionsln
+from src import cypter as cp
+from selenium.webdriver.chrome.options import Options
+
+
 
 
 dictionary = ['Wow!!', 'Nice post!', 'Great post!', 'Really nice!','Interesting!',
@@ -25,6 +23,9 @@ dictionary = ['Wow!!', 'Nice post!', 'Great post!', 'Really nice!','Interesting!
 tagdic = ['sightseeing', 'travel', 'travelgram','moutain','river','sunset','sunrise','forest','naturephotography','nature','architecture',
           'buildings','photography','photograph','photoshop','arizona','sonyalpha',
           'canon','vacation','greece','bestplacestogo','reflection','blogger']
+
+keydict = ['linukas','jjk','king','yin']
+
 
 def initlog(userName):
     # create logger with 'spam_application'
@@ -56,19 +57,20 @@ def execute_times(driver, times):
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(2)
     print('scrolllllllll')
-    #driver.execute_script("window.scrollTo(0, -(document.body.scrollHeight));")
     time.sleep(5)
 
 
-def login(username, password,headless):
+def login(username, password,headless,linux):
     options = Options()
     options.add_argument('window-size=1200x600')
     options.add_argument('--lang=zh-CN')
     options.add_argument('--dns-prefetch-disable')
     if headless:
         options.add_argument('headless')
-
-    browser = webdriver.Chrome()
+    if linux:
+        browser = webdriver.Chrome(chrome_options=options, executable_path='/usr/lib/chromium-browser/chromedriver')
+    else:
+        browser = webdriver.Chrome(chrome_options=options)
     browser.get("https://www.instagram.com/accounts/login/")
     usernameBox = browser.find_element_by_name('username')
     passwordBox = browser.find_element_by_name('password')
@@ -83,10 +85,8 @@ def textcomment_followed(driver, commentstr, arti):
     try:
         comment = arti.find_element_by_css_selector("[class ^= 'glyphsSpriteComment']")
         name = getpostersname(arti)
-        #commentstr = commentstr + ' ' + name
         ActionChains(driver).double_click(comment).perform()
         text = arti.find_element_by_css_selector("[class ^= 'Ypffh']")
-        #text = driver.find_element_by_tag_name('textarea')
         text.send_keys(commentstr)
         text.send_keys(Keys.ENTER)
         print('Comment left: '+commentstr)
@@ -94,8 +94,7 @@ def textcomment_followed(driver, commentstr, arti):
         print(ee)
         
 
-def textcomment_explore(driver, commentstr):
-
+def textcomment_explore(driver, commentstr, logger):
     try:
         comment = driver.find_element_by_css_selector("[class ^= 'glyphsSpriteComment']")
         zan = driver.find_element_by_css_selector("[class ^= 'glyphsSpriteHeart']")
@@ -105,11 +104,10 @@ def textcomment_explore(driver, commentstr):
                 commentstr = commentstr + ' @' + name
             ActionChains(driver).double_click(comment).perform()
             text = driver.find_element_by_css_selector("[class ^= 'Ypffh']")
-           # text = driver.find_element_by_tag_name('textarea')
             text.send_keys(commentstr)
             time.sleep(2)
             text.send_keys(Keys.ENTER)
-            print('Comment left: '+commentstr)
+            logger.info('-->Comment left: '+commentstr)
     except selenium.common.exceptions.NoSuchElementException as ee:
         print(ee)
 
@@ -119,22 +117,6 @@ def close_post(driver):
     ActionChains(driver).double_click(cll).perform()
 
 
-# def likepost(driver,logger):
-#     try:
-#         zan = driver.find_element_by_css_selector("[class ^= 'dCJp8 afkep ']")
-#         ActionChains(driver).double_click(zan).perform()
-#         time.sleep(1)
-#         if 'filled' in (zan.get_attribute('class')):
-#             print('Post liked')
-#             return False
-#         else:
-#             print('Already Liked')
-#             return True
-#     except (selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.StaleElementReferenceException) as ee:
-#         print(ee)
-#         return True
-
-
 
 def likepost(browser, logger):
     """Likes the browser opened image"""
@@ -142,7 +124,6 @@ def likepost(browser, logger):
     like_xpath = "//article/div/section/span/button/span[@aria-label='赞']"
     unlike_xpath = "//section/span/button/span[@aria-label='取消赞']"
     try:
-       # find first for like element
         like_elem = browser.find_elements_by_xpath(like_xpath)
         if len(like_elem) == 1:
                 # sleep real quick right before clicking the element
@@ -180,7 +161,8 @@ def likepost(browser, logger):
 def fffk_notify(browser):
     browser.find_element_by_css_selector("[class^='aOOlW   HoLwm']").click()
 
-################################################
+
+########################################################################################################################
 def get_following_list(browser):
     for link in browser.find_elements_by_xpath("//*[@href]"):
         print(link.get_attribute('href'))
