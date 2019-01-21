@@ -16,7 +16,6 @@ def explore(username,passw,logger,linux,headless):
     logger.info('Starting...')
     print('Waiting for login')
     browser = ut.login(username=username, password=passw, headless=headless,linux=linux)
-    time.sleep(5)
     print('Succed!')
     logger.info('Succed! Start Exploring')
     start = time.time()
@@ -62,7 +61,7 @@ def operate_post(browser, adres, commentwarn,liked,logger):
                     browser.back()
                 if commentwarn > 36:
                     commentwarn = 0
-
+            ut.execute_times(browser, 1)
         except (exceptionsln.TimeoutException, selenium.common.exceptions.StaleElementReferenceException,
                 selenium.common.exceptions.InvalidElementStateException,
                 selenium.common.exceptions.NoSuchElementException) as e:

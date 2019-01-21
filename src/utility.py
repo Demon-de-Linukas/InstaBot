@@ -72,6 +72,7 @@ def login(username, password,headless,linux):
     else:
         browser = webdriver.Chrome(chrome_options=options)
     browser.get("https://www.instagram.com/accounts/login/")
+    time.sleep(5)
     usernameBox = browser.find_element_by_name('username')
     passwordBox = browser.find_element_by_name('password')
     usernameBox.send_keys(username)
