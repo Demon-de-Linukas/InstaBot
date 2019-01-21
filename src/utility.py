@@ -2,7 +2,8 @@ import time
 import selenium
 import csv
 import logging
-
+import os
+import datetime
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -28,11 +29,17 @@ keydict = ['linukas','jjk','king','yin']
 
 
 def initlog(userName):
+    today = datetime.date.today()
+    logadress='logs/%s/'%today
+    try:
+        os.mkdir(logadress)
+    except FileExistsError as e:
+        print(e)
     # create logger with 'spam_application'
     logger = logging.getLogger('spam_application_'+userName)
     logger.setLevel(logging.DEBUG)
     # create file handler which logs even debug messages
-    fh = logging.FileHandler('logs/instalog_%s.log'%userName)
+    fh = logging.FileHandler('%sinstalog_%s.log'%(logadress,userName))
     fh.setLevel(logging.DEBUG)
     # create console handler with a higher log level
     ch = logging.StreamHandler()
