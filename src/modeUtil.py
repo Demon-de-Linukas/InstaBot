@@ -29,10 +29,10 @@ def explore(username,passw,logger,linux,headless):
         end = time.time()
         if (end - start) / 60 / 60 > 1.5:
             browser.close()
-            logger.info('--> Close browser now.')
+            logger.warn('--> Close browser now.')
             break
-        if liked >= 50:
-            print('Refreshing....')
+        if liked >= 20:
+            logger.info('Refreshing....')
             continue
         ut.execute_times(browser, 1)
 
@@ -55,7 +55,7 @@ def operate_post(browser, adres, commentwarn,liked,logger):
                     commentwarn = commentwarn + 1
                 else:
                     commentwarn = commentwarn + 2
-                if ut.likepost(browser, logger):
+                if ut.likepost(browser, logger)==False:
                     liked += 1
                 if browser.current_url != adres:
                     browser.back()

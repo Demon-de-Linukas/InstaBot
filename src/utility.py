@@ -33,7 +33,7 @@ def initlog(userName):
     logadress='logs/%s/'%today
     try:
         os.mkdir(logadress)
-    except FileExistsError as e:
+    except (FileExistsError,FileNotFoundError) as e:
         print(e)
     # create logger with 'spam_application'
     logger = logging.getLogger('spam_application_'+userName)
