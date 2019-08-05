@@ -1,4 +1,4 @@
-# SeleniumTest
+# InstaBot
 
 This is a Web Robot to controll and maintain the instagram account
 
